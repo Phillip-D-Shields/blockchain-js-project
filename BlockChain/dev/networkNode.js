@@ -23,14 +23,16 @@ app.get('/blockchain', function (req, res) {
 
 
 app.post('/transaction', function (req, res) {
-    const blockIndex = coin.createNewTransaction(req.body.amount, req.body.sender, req.body.recipient);
+    const newTransaction = req.body;
+    const blockIndex = coin.addTransactionToPendingTransactions(newTransaction);
+   
     res.json({
-        note: 'Transaction will be added in block ' + blockIndex + '.'
+        note: 'Transaction will be added in block ' + blockIndex 
     });
 });
 
 app.post('/transaction/broadcast', function(req, res) {
-    const createNewTransaction = coin.createNewTransaction(req.body.amount, req.body.sender, req.body.recipient);
+    const newTransaction = coin.createNewTransaction(req.body.amount, req.body.sender, req.body.recipient);
     coin.addTransactionToPendingTransactions(newTransaction);
 
     const requestPromises = [];
